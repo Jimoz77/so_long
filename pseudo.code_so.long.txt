@@ -1,0 +1,119 @@
+Début du programme
+
+Fonction principale :
+    - Afficher le menu principal
+    - Lire l'entrée de l'utilisateur
+
+    Si l'utilisateur choisit "Ajouter une tâche" :
+        - Appeler la fonction ajouterTache()
+
+    Si l'utilisateur choisit "Afficher les tâches" :
+        - Appeler la fonction afficherTaches()
+
+    Si l'utilisateur choisit "Quitter" :
+        - Quitter le programme
+
+Fin de la fonction principale
+
+Fonction ajouterTache() :
+    - Demander à l'utilisateur d'entrer la description de la tâche
+    - Ajouter la tâche à la liste des tâches
+
+Fin de la fonction ajouterTache()
+
+Fonction afficherTaches() :
+    - Si la liste des tâches est vide :
+        - Afficher "Aucune tâche à afficher"
+    Sinon :
+        - Pour chaque tâche dans la liste des tâches :
+            - Afficher la tâche
+
+Fin de la fonction afficherTaches()
+
+Fin du programme
+
+
+
+
+
+
+
+
+
+############## PSEUDO CODE PLUS PRECIS ############
+
+
+
+
+
+
+Début du programme
+
+Variables globales :
+    - Liste des tâches : liste vide
+
+Fonction principale :
+    - Afficher le menu principal
+    - Lire l'entrée de l'utilisateur
+
+    Tant que l'utilisateur n'a pas choisi "Quitter" :
+        Si l'utilisateur choisit "Ajouter une tâche" :
+            - Appeler la fonction ajouterTache()
+
+        Si l'utilisateur choisit "Afficher les tâches" :
+            - Appeler la fonction afficherTaches()
+
+        Si l'utilisateur choisit "Supprimer une tâche" :
+            - Appeler la fonction supprimerTache()
+
+        Si l'utilisateur choisit "Quitter" :
+            - Afficher un message de sortie et quitter le programme
+
+        Sinon :
+            - Afficher "Option invalide, veuillez réessayer"
+        
+        - Afficher de nouveau le menu principal
+        - Lire la nouvelle entrée de l'utilisateur
+
+Fin de la fonction principale
+
+Fonction afficherMenu() :
+    - Afficher "Menu principal :"
+    - Afficher "1. Ajouter une tâche"
+    - Afficher "2. Afficher les tâches"
+    - Afficher "3. Supprimer une tâche"
+    - Afficher "4. Quitter"
+    - Demander à l'utilisateur de choisir une option
+
+Fin de la fonction afficherMenu()
+
+Fonction ajouterTache() :
+    - Demander à l'utilisateur d'entrer la description de la tâche
+    - Ajouter la tâche à la liste des tâches
+    - Afficher "Tâche ajoutée avec succès"
+
+Fin de la fonction ajouterTache()
+
+Fonction afficherTaches() :
+    - Si la liste des tâches est vide :
+        - Afficher "Aucune tâche à afficher"
+    Sinon :
+        - Pour chaque tâche dans la liste des tâches, avec son numéro :
+            - Afficher le numéro et la description de la tâche
+
+Fin de la fonction afficherTaches()
+
+Fonction supprimerTache() :
+    - Si la liste des tâches est vide :
+        - Afficher "Aucune tâche à supprimer"
+    Sinon :
+        - Afficher les tâches avec leurs numéros
+        - Demander à l'utilisateur de choisir le numéro de la tâche à supprimer
+        - Vérifier si le numéro est valide
+        - Si valide, supprimer la tâche de la liste des tâches
+        - Afficher "Tâche supprimée avec succès"
+        - Sinon, afficher "Numéro de tâche invalide"
+
+Fin de la fonction supprimerTache()
+
+Fin du programme
