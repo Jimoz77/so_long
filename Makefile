@@ -2,7 +2,7 @@
 CC = gcc
 
 # Options de compilation
-CFLAGS = -I/usr/local/include -I./gnl
+CFLAGS = -Wall -Wextra -Werror -I/usr/local/include -I./gnl
 
 # Dossier où se trouvent les fichiers objets
 OBJ_DIR = obj
@@ -11,7 +11,7 @@ OBJ_DIR = obj
 NAME = so_long
 
 # Liste des fichiers sources
-SRCS = test.c gnl/get_next_line.c gnl/get_next_line_utils.c
+SRCS = test3_prob_size.c gnl/get_next_line.c gnl/get_next_line_utils.c ft_printf/libftprintf.a ft_printf/libft/libft.a
 
 # Génère les fichiers objets correspondants
 OBJS = $(SRCS:%.c=$(OBJ_DIR)/%.o)

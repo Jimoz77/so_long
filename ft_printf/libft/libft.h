@@ -1,32 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jimpa <jimpa@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/15 12:15:06 by jiparcer          #+#    #+#             */
-/*   Updated: 2025/01/20 19:15:01 by jimpa            ###   ########.fr       */
+/*   Created: 2024/10/04 13:02:42 by jimpa             #+#    #+#             */
+/*   Updated: 2025/01/20 18:54:36 by jimpa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
+#ifndef LIBFT_H
+# define LIBFT_H
 
+/* off lib */
+# include <stdio.h>
+# include <stdint.h>
+# include <string.h>
 # include <unistd.h>
 # include <stdlib.h>
-#include <stdint.h>
 
-# ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 10
-# endif
-
-char	*ft_strconc(const char *source, char *dest, int s_len, int d_len);
-char	*ft_copy_til_bs(char *str);
-char	*get_next_line(int fd);
-void	*ft_memmove(void *dst, const void *src, size_t len);
-char	*ft_strdup(const char *str);
-void	*ft_calloc(size_t num, size_t size);
-char	*multifree(char *stash, char *buffer);
+int		ft_tolower(int c);
+size_t	ft_strlen(const char *str);
+void	ft_putchar(char c);
+void	ft_putstr(char *str);
+char	*ft_itoa_base(int n, int base);
+char	*ft_itoa_base_printf(unsigned long value, int base);
+char	*ft_itoa(int n);
+char	*ft_unitoa(unsigned int n);
 
 #endif

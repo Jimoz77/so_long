@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jiparcer <jiparcer@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jimpa <jimpa@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 12:17:24 by jiparcer          #+#    #+#             */
-/*   Updated: 2024/11/15 12:19:12 by jiparcer         ###   ########.fr       */
+/*   Updated: 2025/01/20 19:15:58 by jimpa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+#include "../ft_printf/libft/libft.h"
 
 //pour utiliser read : read(fichier,destination, taille)
 int	read_and_store(int fd, char **buf, char **sta)

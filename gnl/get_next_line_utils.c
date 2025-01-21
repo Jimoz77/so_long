@@ -3,14 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jiparcer <jiparcer@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jimpa <jimpa@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 12:17:38 by jiparcer          #+#    #+#             */
-/*   Updated: 2024/11/15 12:17:40 by jiparcer         ###   ########.fr       */
+/*   Updated: 2025/01/21 14:09:03 by jimpa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+#include "../ft_printf/libft/libft.h"
+
 
 char	*ft_strchr(const char *s, int c)
 {
@@ -81,16 +83,6 @@ char	*ft_copy_til_bs(char *str)
 	if (newline_pos)
 		ft_memmove(str, newline_pos + 1, ft_strlen(newline_pos));
 	return (copy);
-}
-
-int	ft_strlen(char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i] != '\0')
-		i++;
-	return (i);
 }
 
 void	*ft_memmove(void *dst, const void *src, size_t n)
