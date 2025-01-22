@@ -6,7 +6,7 @@
 /*   By: jimpa <jimpa@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 14:34:45 by jimpa             #+#    #+#             */
-/*   Updated: 2025/01/20 18:46:13 by jimpa            ###   ########.fr       */
+/*   Updated: 2025/01/21 22:04:20 by jimpa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <stdbool.h>
 # include "gnl/get_next_line.h"
 # include "ft_printf/ft_printf.h"
+# include "minilibx-linux/mlx_int.h"
 
 typedef struct s_data
 {

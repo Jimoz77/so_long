@@ -1,6 +1,39 @@
 #include "so_long.h"
 #include <stdio.h>
 
+void free_params(t_params *params)
+{
+    if (params)
+    {
+        if (params->map)
+        {
+            for (int i = 0; i < params->map->height; i++)
+                free(params->map->map_data[i]);
+            free(params->map->map_data);
+            free(params->map);
+        }
+        if (params->img)
+        {
+            if (params->img->img)
+                mlx_destroy_image(params->mlx_ptr, params->img->img);
+            free(params->img);
+        }
+        if (params->sprite)
+        {
+            if (params->sprite->img)
+                mlx_destroy_image(params->mlx_ptr, params->sprite->img);
+            free(params->sprite);
+        }
+        if (params->win_ptr)
+            mlx_destroy_window(params->mlx_ptr, params->win_ptr);
+        if (params->mlx_ptr)
+        {
+            mlx_destroy_display(params->mlx_ptr);
+            free(params->mlx_ptr);
+        }
+    }
+}
+
 void my_mlx_pixel_put(t_data *data, int x, int y, int color)
 {
     char *dest;
@@ -276,30 +309,30 @@ int move_player(t_map *map, int keycode)
 
 
 
-int key_input(int keycode, void *param)
+int key_input(int keycode, t_params *param)
 {
-    t_params *params = (t_params *)param;
     int change = 0;
     if (keycode == 53 || keycode == 65307)
     {
-        mlx_destroy_window(params->mlx_ptr, params->win_ptr);
+        //mlx_destroy_window(param->mlx_ptr, param->win_ptr);
+        free_params(param);
         exit(0);
     }
-    change = move_player(params->map, keycode);
+    change = move_player(param->map, keycode);
     if(change == 1)
     {
-        draw_map(params->map, params->img, params->sprite, params->zoom);
-        mlx_put_image_to_window(params->mlx_ptr, params->win_ptr, params->img->img, 0, 0);
+        draw_map(param->map, param->img, param->sprite, param->zoom);
+        mlx_put_image_to_window(param->mlx_ptr, param->win_ptr, param->img->img, 0, 0);
     }
 
     return (0);
 }
 
 
-int close_win_cross(void *param)
+int close_win_cross(t_params *param)
 {
-    t_params *params = (t_params *)param;
-    mlx_destroy_window(params->mlx_ptr, params->win_ptr);
+    //mlx_destroy_window(param->mlx_ptr, param->win_ptr);
+    free_params(param);
     exit(0);
     return (0);
 }
@@ -366,70 +399,86 @@ t_map *read_map(char *file_name)
     close(fd);
     return (map);
 }
+int map_checker(t_params *params)
+{
+    int result = 1;
 
+    if (check_map_corners(params->map) == 0)
+        result = 0;
+    if (is_map_solvable(params->map) == 0)
+        result = 0;
+    if (result == 0)
+    {
+        ft_printf("LA MAP N'EST PAS FERMÈE, INCOMPLÈTE OU INSOLVABLE\n");
+        free_params(params);
+        exit (0);
+        return (0);
+    }
+    return (result);
+    
+}
 
 int main(void)
 {
-    void *mlx;
-    void *mlx_win;
-    t_data img = {0};
-    t_map *map;
-    t_sprite *sprite;
     t_params params = {0}; // Crée une instance de t_params
     int checked = 0;
-    int zoom_factor = 1; 
+    params.zoom = 3;
 
-    mlx = (void *)mlx_init();
-    if (!mlx)
+    params.mlx_ptr = mlx_init();
+    if (!params.mlx_ptr)
     {
         ft_printf("Erreur lors de l'initialisation de mlx\n");
         return (1);
     }
-    mlx_win = mlx_new_window(mlx, 1920, 1080, "slime buck");
-    if (!mlx_win)
+    params.win_ptr = mlx_new_window(params.mlx_ptr, 1920, 1080, "slime buck");
+    if (!params.win_ptr)
     {
         ft_printf("Erreur lors de la création de la fenêtre\n");
+        free_params(&params);
         return (1);
     }
-    img.img = mlx_new_image(mlx, 1920, 1080);
-    if (!img.img)
+    // Allouer de la mémoire pour params.img
+    params.img = malloc(sizeof(t_data));
+    if (!params.img)
+    {
+        ft_printf("Erreur lors de l'allocation de mémoire pour l'image\n");
+        free_params(&params);
+        return (1);
+    }
+
+    params.img->img = mlx_new_image(params.mlx_ptr, 1920, 1080);
+    if (!params.img->img)
     {
         ft_printf("Erreur lors de la création de l'image\n");
+        free_params(&params);
         return (1);
     }
-    img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length, &img.endian);
-    if (!img.addr)
+    params.img->addr = mlx_get_data_addr(params.img->img, &params.img->bits_per_pixel, &params.img->line_length, &params.img->endian);
+    if (!params.img->addr)
     {
         ft_printf("Erreur lors de l'accès aux données de l'image\n");
+        free_params(&params);
         return (1);
     }
-    sprite = load_sprite(mlx, "spritesheet.so_long.xpm");
-    if (!sprite)
-        return (1);
-    map = read_map("map_wide.ber");
-    if ((check_map_corners(map) == 0 && checked == 0) || is_map_solvable(map) == 0)
+    params.sprite = load_sprite(params.mlx_ptr, "spritesheet.so_long.xpm");
+    if (!params.sprite)
     {
-        ft_printf("LA MAP N'EST PAS FERMÈE, INCOMPLÈTE OU INSOLVABLE\n");
-        return (0);
+        free_params(&params);
+        return (1);
+    }
+    params.map = read_map("map_wide.ber");
+    if (checked == 0)
+    {
+        map_checker(&params);
     }
     checked = 1;
 
-    //printf("%d\n", is_map_solvable(map));
-    // Initialiser les paramètres
-    params.img = &img;
-    params.map = map;
-    params.sprite = sprite;
-    params.mlx_ptr = mlx;
-    params.win_ptr = mlx_win;
-    params.zoom = zoom_factor;
-
-    draw_map(map, &img, sprite, zoom_factor); 
-    mlx_put_image_to_window(mlx, mlx_win, img.img, 0, 0);
+    draw_map(params.map, params.img, params.sprite, params.zoom); 
+    mlx_put_image_to_window(params.mlx_ptr, params.win_ptr, params.img->img, 0, 0);
     
-    mlx_key_hook(mlx_win, key_input, &params); // Passe l'adresse des paramètres
-    mlx_hook(mlx_win, 33, (1L << 17), close_win_cross, mlx);
-    mlx_loop(mlx);
-
+    mlx_key_hook(params.win_ptr, key_input, &params); // Passe l'adresse des paramètres
+    mlx_hook(params.win_ptr, 33, (1L << 17), close_win_cross, &params);
+    mlx_loop(params.mlx_ptr);
     return 0;
 }
 

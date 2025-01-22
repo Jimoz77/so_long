@@ -2,7 +2,7 @@
 CC = gcc
 
 # Options de compilation
-CFLAGS = -Wall -Wextra -Werror -I/usr/local/include -I./gnl
+CFLAGS = -Wall -Wextra -Werror -I/usr/local/include/ -I./gnl
 
 # Dossier où se trouvent les fichiers objets
 OBJ_DIR = obj
@@ -17,7 +17,7 @@ SRCS = test3_prob_size.c gnl/get_next_line.c gnl/get_next_line_utils.c ft_printf
 OBJS = $(SRCS:%.c=$(OBJ_DIR)/%.o)
 
 # Lien des bibliothèques
-LDFLAGS = -L/usr/local/lib -lmlx -lX11 -lXext -lm
+LDFLAGS = -L/usr/local/lib -Lminilibx-linux -lmlx_Linux -lX11 -lXext
 
 # Commande de génération des fichiers objets
 $(OBJ_DIR)/%.o: %.c
