@@ -2,7 +2,7 @@
 CC = gcc
 
 # Options de compilation
-CFLAGS = -Wall -Wextra -Werror -I/usr/local/include/ -I./gnl
+CFLAGS = -Wall -Wextra -Werror -g
 
 # Dossier où se trouvent les fichiers objets
 OBJ_DIR = obj
@@ -11,30 +11,50 @@ OBJ_DIR = obj
 NAME = so_long
 
 # Liste des fichiers sources
-SRCS = test3_prob_size.c gnl/get_next_line.c gnl/get_next_line_utils.c ft_printf/libftprintf.a ft_printf/libft/libft.a
+SRCS = test3_prob_size.c gnl/get_next_line.c gnl/get_next_line_utils.c
 
 # Génère les fichiers objets correspondants
 OBJS = $(SRCS:%.c=$(OBJ_DIR)/%.o)
 
 # Lien des bibliothèques
-LDFLAGS = -L/usr/local/lib -Lminilibx-linux -lmlx_Linux -lX11 -lXext
+MLX_PATH = ./minilibx-linux
+MLX_FLAGS = -L$(MLX_PATH) -lmlx -lX11 -lXext -lXrender -lXrandr -lXcursor -lm -lpthread
+INC_FLAGS = -Iincludes -Imlx -I/usr/include -I$(MLX_PATH)
+
+# Variables pour les fichiers .a
+SRCPTF = ft_printf/libftprintf.a
+SRCLIBFT = ft_printf/libft/libft.a
 
 # Commande de génération des fichiers objets
 $(OBJ_DIR)/%.o: %.c
 	@mkdir -p $(dir $@)
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) $(INC_FLAGS) -c $< -o $@
 
 # Commande de compilation de l'exécutable
-$(NAME): $(OBJS)
-	$(CC) $(OBJS) -o $(NAME) $(LDFLAGS)
+$(NAME): $(OBJS) $(SRCPTF) $(MLX_PATH)/libmlx_linux.a
+	$(CC) $(CFLAGS) $(OBJS) $(SRCPTF) $(SRCLIBFT) -o $(NAME) $(MLX_FLAGS)
+
+# Cible pour compiler libftprintf.a
+$(SRCPTF):
+	$(MAKE) -C ft_printf
+
+# Cible pour compiler minilibx
+$(MLX_PATH)/libmlx_linux.a:
+	$(MAKE) -C $(MLX_PATH)
 
 # Cible pour nettoyer les fichiers objets
 clean:
 	rm -rf $(OBJ_DIR)
+	$(MAKE) -C ft_printf clean
+	$(MAKE) -C ft_printf/libft clean
+	$(MAKE) -C $(MLX_PATH) clean
 
 # Cible pour nettoyer les fichiers objets et l'exécutable
 fclean: clean
 	rm -f $(NAME)
+	$(MAKE) -C ft_printf fclean
+	$(MAKE) -C ft_printf/libft fclean
+	$(MAKE) -C $(MLX_PATH) clean
 
 # Cible pour recompiler le projet entièrement
 re: fclean $(NAME)
@@ -42,22 +62,3 @@ re: fclean $(NAME)
 # Cible par défaut
 .PHONY: all clean fclean re
 all: $(NAME)
-
-
-
-
-
-
-
-
-#For object files, you could add the following rule to your makefile, assuming that you have the mlx for linux source in a directory named mlx_linux in the root of your project:
-
-#%.o: %.c
-#	$(CC) -Wall -Wextra -Werror -I/usr/include -Imlx_linux -O3 -c $< -o $@
-
-
-#To link with the required internal Linux API:
-
-#$(NAME): $(OBJ)
-#	$(CC) $(OBJ) -Lmlx_linux -lmlx_Linux -L/usr/lib -Imlx_linux -lXext -lX11 -lm -lz -o $(NAME)
-
