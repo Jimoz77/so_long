@@ -1,6 +1,65 @@
 #include "so_long.h"
 #include <stdio.h>
 
+int coin_counter(t_map *map)
+{
+    int i;
+	int j;
+	int coin;
+
+    i = 0;
+	coin = 0;
+    while (i < map->height - 1)
+    {
+		j = 0;
+        while (j < map->width)
+		{
+			if(map->map_data[i][j] == 'C')
+				coin++;
+			j++;
+		}
+		i++;
+    }
+	return(coin);
+}
+
+int line_lenght_checker(t_map *map)
+{
+    int i;
+    int first_line;
+
+    i = 0;
+    first_line = ft_strlen(map->map_data[i]);
+    while (i < map->height - 2)
+    {
+        if (ft_strlen(map->map_data[i]) != (size_t)first_line)
+            return (0);
+        i++;
+    }
+    i++;
+    if (ft_strlen(map->map_data[i]) + 1 != (size_t)first_line)
+            return (0);
+    return (1);
+}
+
+int check_carac(t_map *map)
+{
+    int i = 0;
+    int j;
+    while (i < map->height)
+    {
+        j = 0;
+        while (j < map->width - 1)
+        {
+            if (map->map_data[i][j] != '1' && map->map_data[i][j] != '0' && map->map_data[i][j] != 'P' && map->map_data[i][j] != 'E' && map->map_data[i][j] != 'C')
+                return (0);
+            j++;
+        }
+        i++;
+    }
+    return (1);
+}
+
 void free_params(t_params *params)
 {
     if (params)
@@ -240,7 +299,7 @@ void draw_map(t_map *map, t_data *img, t_sprite *sprite, int zoom_factor)
         y++;
     }
 }
-int move_player(t_map *map, int keycode)
+int move_player(t_map *map, int keycode, int max_coin)
 {
     int x;
     int y;
@@ -294,8 +353,10 @@ int move_player(t_map *map, int keycode)
             ft_printf("mouvements : %d\n", move);
             return 1;
         }
-        else if (map->map_data[new_y][new_x] == 'E' && coin_wallet > 0) // Autorise l'accès à 'E' seulement si au moins une pièce est ramassée
+        else if (map->map_data[new_y][new_x] == 'E' && coin_wallet == max_coin) // Autorise l'accès à 'E' seulement si au moins une pièce est ramassée
         {
+			printf("wallet : %d", coin_wallet);
+			printf("counter : %d", max_coin);
             map->map_data[y][x] = '0';
             map->map_data[new_y][new_x] = 'D';
             move++;
@@ -318,7 +379,7 @@ int key_input(int keycode, t_params *param)
         free_params(param);
         exit(0);
     }
-    change = move_player(param->map, keycode);
+    change = move_player(param->map, keycode, param->max_coin);
     if(change == 1)
     {
         draw_map(param->map, param->img, param->sprite, param->zoom);
@@ -331,7 +392,6 @@ int key_input(int keycode, t_params *param)
 
 int close_win_cross(t_params *param)
 {
-    //mlx_destroy_window(param->mlx_ptr, param->win_ptr);
     free_params(param);
     exit(0);
     return (0);
@@ -403,6 +463,15 @@ int map_checker(t_params *params)
 {
     int result = 1;
 
+    if (check_carac(params->map) == 0)
+    {
+        ft_printf("LA MAP N'EST PAS FERMÈE, INCOMPLÈTE OU INSOLVABLE\n");
+        free_params(params);
+        exit(0);
+        return (0);
+    }
+    if (line_lenght_checker(params->map) == 0)
+        result = 0;
     if (check_map_corners(params->map) == 0)
         result = 0;
     if (is_map_solvable(params->map) == 0)
@@ -421,9 +490,12 @@ int map_checker(t_params *params)
 int main(void)
 {
     t_params params = {0}; // Crée une instance de t_params
-    int checked = 0;
     params.zoom = 3;
 
+    params.map = read_map("map_wide.ber");
+	params.max_coin = coin_counter(params.map);
+    if (map_checker(&params) == 0)
+        return (1);
     params.mlx_ptr = mlx_init();
     if (!params.mlx_ptr)
     {
@@ -466,13 +538,6 @@ int main(void)
         free_params(&params);
         return (1);
     }
-    params.map = read_map("map_wide.ber");
-    if (checked == 0)
-    {
-        map_checker(&params);
-    }
-    checked = 1;
-
     draw_map(params.map, params.img, params.sprite, params.zoom); 
     mlx_put_image_to_window(params.mlx_ptr, params.win_ptr, params.img->img, 0, 0);
     

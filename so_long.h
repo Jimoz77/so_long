@@ -55,6 +55,7 @@ typedef struct s_params {
     void *mlx_ptr;
     void *win_ptr;
     int zoom;
+	int max_coin;
 } t_params;
 
 typedef struct
