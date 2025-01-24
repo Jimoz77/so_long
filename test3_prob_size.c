@@ -62,12 +62,17 @@ int check_carac(t_map *map)
 
 void free_params(t_params *params)
 {
+	int i;
+	i = 0;
     if (params)
     {
         if (params->map)
         {
-            for (int i = 0; i < params->map->height; i++)
-                free(params->map->map_data[i]);
+            while (i < params->map->height)
+                {
+					free(params->map->map_data[i]);
+					i++;
+				}
             free(params->map->map_data);
             free(params->map);
         }
@@ -305,7 +310,7 @@ int move_player(t_map *map, int keycode, int max_coin)
     int y;
     int new_x;
     int new_y;
-    static int move = -1;
+    static int move = 0;
     static int coin_wallet = 0;
 
     // Trouver la position actuelle du joueur
@@ -330,16 +335,15 @@ int move_player(t_map *map, int keycode, int max_coin)
 
     // Déplacer le joueur selon l'input
     if (keycode == 119) // 'w'
-        new_y--;
+			new_y--;
     else if (keycode == 115) // 's'
-        new_y++;
+			new_y++;
     else if (keycode == 97)  // 'a'
-        new_x--;
+			new_x--;
     else if (keycode == 100) // 'd'
-        new_x++;
-
+			new_x++;
     // Vérifie que les nouvelles coordonnées sont dans les limites de la carte
-    if (new_x >= 0 && new_x < map->width && new_y >= 0 && new_y < map->height)
+    if (new_x >= 0 && new_x < map->width && new_y >= 0 && new_y < map->height && (keycode == 100 || keycode == 97 || keycode == 115 || keycode == 119))
     {
         if (map->map_data[new_y][new_x] != '1' && map->map_data[new_y][new_x] != 'E')
         {
@@ -355,8 +359,6 @@ int move_player(t_map *map, int keycode, int max_coin)
         }
         else if (map->map_data[new_y][new_x] == 'E' && coin_wallet == max_coin) // Autorise l'accès à 'E' seulement si au moins une pièce est ramassée
         {
-			printf("wallet : %d", coin_wallet);
-			printf("counter : %d", max_coin);
             map->map_data[y][x] = '0';
             map->map_data[new_y][new_x] = 'D';
             move++;
@@ -373,9 +375,8 @@ int move_player(t_map *map, int keycode, int max_coin)
 int key_input(int keycode, t_params *param)
 {
     int change = 0;
-    if (keycode == 53 || keycode == 65307)
+    if (keycode == 65307)
     {
-        //mlx_destroy_window(param->mlx_ptr, param->win_ptr);
         free_params(param);
         exit(0);
     }
@@ -465,7 +466,7 @@ int map_checker(t_params *params)
 
     if (check_carac(params->map) == 0)
     {
-        ft_printf("LA MAP N'EST PAS FERMÈE, INCOMPLÈTE OU INSOLVABLE\n");
+        ft_printf("Error\nLA MAP N'EST PAS FERMÈE, INCOMPLÈTE OU INSOLVABLE\n");
         free_params(params);
         exit(0);
         return (0);
@@ -478,7 +479,7 @@ int map_checker(t_params *params)
         result = 0;
     if (result == 0)
     {
-        ft_printf("LA MAP N'EST PAS FERMÈE, INCOMPLÈTE OU INSOLVABLE\n");
+        ft_printf("Error\nLA MAP N'EST PAS FERMÈE, INCOMPLÈTE OU INSOLVABLE\n");
         free_params(params);
         exit (0);
         return (0);
@@ -487,64 +488,73 @@ int map_checker(t_params *params)
     
 }
 
-int main(void)
+int main(int ac, char **av)
 {
     t_params params = {0}; // Crée une instance de t_params
     params.zoom = 3;
 
-    params.map = read_map("map_wide.ber");
-	params.max_coin = coin_counter(params.map);
-    if (map_checker(&params) == 0)
-        return (1);
-    params.mlx_ptr = mlx_init();
-    if (!params.mlx_ptr)
-    {
-        ft_printf("Erreur lors de l'initialisation de mlx\n");
-        return (1);
-    }
-    params.win_ptr = mlx_new_window(params.mlx_ptr, 1920, 1080, "slime buck");
-    if (!params.win_ptr)
-    {
-        ft_printf("Erreur lors de la création de la fenêtre\n");
-        free_params(&params);
-        return (1);
-    }
-    // Allouer de la mémoire pour params.img
-    params.img = malloc(sizeof(t_data));
-    if (!params.img)
-    {
-        ft_printf("Erreur lors de l'allocation de mémoire pour l'image\n");
-        free_params(&params);
-        return (1);
-    }
+	if(ac == 2)
+	{
+		params.map = read_map(av[1]);
+		params.max_coin = coin_counter(params.map);
+    	if (map_checker(&params) == 0)
+        	return (1);
+    	params.mlx_ptr = mlx_init();
+    	if (!params.mlx_ptr)
+    	{
+        	ft_printf("Error\nErreur lors de l'initialisation de mlx\n");
+        	return (1);
+    	}
+    	params.win_ptr = mlx_new_window(params.mlx_ptr, 1920, 1080, "slime buck");
+    	if (!params.win_ptr)
+    	{
+        	ft_printf("Error\nErreur lors de la création de la fenêtre\n");
+        	free_params(&params);
+        	return (1);
+    	}
+    	// Allouer de la mémoire pour params.img
+    	params.img = malloc(sizeof(t_data));
+    	if (!params.img)
+    	{
+        	ft_printf("Error\nErreur lors de l'allocation de mémoire pour l'image\n");
+        	free_params(&params);
+        	return (1);
+    	}
 
-    params.img->img = mlx_new_image(params.mlx_ptr, 1920, 1080);
-    if (!params.img->img)
-    {
-        ft_printf("Erreur lors de la création de l'image\n");
-        free_params(&params);
-        return (1);
-    }
-    params.img->addr = mlx_get_data_addr(params.img->img, &params.img->bits_per_pixel, &params.img->line_length, &params.img->endian);
-    if (!params.img->addr)
-    {
-        ft_printf("Erreur lors de l'accès aux données de l'image\n");
-        free_params(&params);
-        return (1);
-    }
-    params.sprite = load_sprite(params.mlx_ptr, "spritesheet.so_long.xpm");
-    if (!params.sprite)
-    {
-        free_params(&params);
-        return (1);
-    }
-    draw_map(params.map, params.img, params.sprite, params.zoom); 
-    mlx_put_image_to_window(params.mlx_ptr, params.win_ptr, params.img->img, 0, 0);
+    	params.img->img = mlx_new_image(params.mlx_ptr, 1920, 1080);
+    	if (!params.img->img)
+    	{
+        	ft_printf("Error\nErreur lors de la création de l'image\n");
+        	free_params(&params);
+        	return (1);
+    	}
+    	params.img->addr = mlx_get_data_addr(params.img->img, &params.img->bits_per_pixel, &params.img->line_length, &params.img->endian);
+    	if (!params.img->addr)
+    	{
+        	ft_printf("Error\nErreur lors de l'accès aux données de l'image\n");
+        	free_params(&params);
+        	return (1);
+    	}
+    	params.sprite = load_sprite(params.mlx_ptr, "spritesheet.so_long.xpm");
+    	if (!params.sprite)
+    	{
+        	free_params(&params);
+        	return (1);
+    	}
+    	draw_map(params.map, params.img, params.sprite, params.zoom); 
+    	mlx_put_image_to_window(params.mlx_ptr, params.win_ptr, params.img->img, 0, 0);
     
-    mlx_key_hook(params.win_ptr, key_input, &params); // Passe l'adresse des paramètres
-    mlx_hook(params.win_ptr, 33, (1L << 17), close_win_cross, &params);
-    mlx_loop(params.mlx_ptr);
-    return 0;
+    	mlx_key_hook(params.win_ptr, key_input, &params); // Passe l'adresse des paramètres
+    	mlx_hook(params.win_ptr, 33, (1L << 17), close_win_cross, &params);
+    	mlx_loop(params.mlx_ptr);
+    	return 0;
+	}
+	else
+	{
+		ft_printf("Error\nAucune map n'as ete donne en argument");
+		return (0);
+	}
+    
 }
 
 
