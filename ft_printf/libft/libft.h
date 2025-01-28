@@ -6,7 +6,7 @@
 /*   By: jimpa <jimpa@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/04 13:02:42 by jimpa             #+#    #+#             */
-/*   Updated: 2025/01/20 18:54:36 by jimpa            ###   ########.fr       */
+/*   Updated: 2025/01/27 15:35:34 by jimpa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,5 +28,6 @@ char	*ft_itoa_base(int n, int base);
 char	*ft_itoa_base_printf(unsigned long value, int base);
 char	*ft_itoa(int n);
 char	*ft_unitoa(unsigned int n);
-
+char	*ft_strcpy(char *dst, const char *src);
+void	*ft_memset(void *b, int c, int len);
 #endif

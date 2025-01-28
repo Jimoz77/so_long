@@ -1,5 +1,5 @@
 FILE	=	ft_strlen.c ft_tolower.c ft_itoa.c ft_putchar.c\
-			ft_putstr.c ft_itoa_base.c ft_unitoa.c ft_itoa_base_printf.c
+			ft_putstr.c ft_itoa_base.c ft_unitoa.c ft_itoa_base_printf.c ft_strcpy.c ft_memset.c\
 
 OBJS	=	$(FILE:.c=.o)
 
