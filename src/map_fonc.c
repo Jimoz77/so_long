@@ -6,7 +6,7 @@
 /*   By: jimpa <jimpa@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 21:22:17 by jimpa             #+#    #+#             */
-/*   Updated: 2025/01/31 16:59:53 by jimpa            ###   ########.fr       */
+/*   Updated: 2025/01/31 17:09:23 by jimpa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -225,49 +225,53 @@ void	draw_map(t_params p)
 
 t_map	*read_map(char *file_name)
 {
-	t_map	*map;
-	char	*line;
-	int		fd;
-	int		i;
+    t_map	*map;
+    char	*line;
+    int		fd;
+    int		i;
 
-	fd = open(file_name, O_RDONLY);
-	if (fd < 0)
-		return (NULL);
-	map = (t_map *)malloc(sizeof(t_map));
-	if (!map)
-		return (NULL);
-	map->height = 0;
-	while ((line = get_next_line(fd)))
-	{
-		free(line);
-		map->height++;
-	}
-	map->m_dat = (char **)malloc(sizeof(char *) * map->height);
-	if (!map->m_dat)
-	{
-		free(map);
-		return (NULL);
-	}
-	close(fd);
-	fd = open(file_name, O_RDONLY);
-	if (fd < 0)
-	{
-		free(map->m_dat);
-		free(map);
-		return (NULL);
-	}
-	i = 0;
-	while ((line = get_next_line(fd)))
-	{
-		map->m_dat[i] = line;
-		i++;
-	}
-	if (map->height > 0)
-		map->width = ft_strlen(map->m_dat[0]);
-	else
-		map->width = 0;
-	close(fd);
-	return (map);
+    fd = open(file_name, O_RDONLY);
+    if (fd < 0)
+        return (NULL);
+    map = (t_map *)malloc(sizeof(t_map));
+    if (!map)
+        return (NULL);
+    map->height = 0;
+    line = get_next_line(fd);
+    while (line)
+    {
+        free(line);
+        map->height++;
+        line = get_next_line(fd);
+    }
+    map->m_dat = (char **)malloc(sizeof(char *) * map->height);
+    if (!map->m_dat)
+    {
+        free(map);
+        return (NULL);
+    }
+    close(fd);
+    fd = open(file_name, O_RDONLY);
+    if (fd < 0)
+    {
+        free(map->m_dat);
+        free(map);
+        return (NULL);
+    }
+    i = 0;
+    line = get_next_line(fd);
+    while (line)
+    {
+        map->m_dat[i] = line;
+        i++;
+        line = get_next_line(fd);
+    }
+    if (map->height > 0)
+        map->width = ft_strlen(map->m_dat[0]);
+    else
+        map->width = 0;
+    close(fd);
+    return (map);
 }
 
 void	map_checker(t_params *params)
