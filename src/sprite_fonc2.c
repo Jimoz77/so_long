@@ -6,7 +6,7 @@
 /*   By: jimpa <jimpa@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 18:02:41 by jimpa             #+#    #+#             */
-/*   Updated: 2025/01/27 18:14:08 by jimpa            ###   ########.fr       */
+/*   Updated: 2025/01/31 14:40:13 by jimpa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,10 +41,10 @@ void	draw_sprite(t_params p, int start_x, int start_y, t_sprite_params sp)
 	dp.start_x = start_x;
 	dp.start_y = start_y;
 	draw.y = 0;
-	while (draw.y <= p.sprite->height)
+	while (draw.y < TILE_SIZE)
 	{
 		draw.x = 0;
-		while (draw.x <= p.sprite->width)
+		while (draw.x < TILE_SIZE)
 		{
 			if ((sp.sprite_y + draw.y) < p.sprite->height && \
 			(sp.sprite_x + draw.x) < p.sprite->width)

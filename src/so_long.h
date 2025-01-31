@@ -6,7 +6,7 @@
 /*   By: jimpa <jimpa@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 14:34:45 by jimpa             #+#    #+#             */
-/*   Updated: 2025/01/27 18:13:28 by jimpa            ###   ########.fr       */
+/*   Updated: 2025/01/31 15:38:18 by jimpa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,7 @@ typedef struct s_draw_params
 # define SPRITE_EXIT_X 224
 # define SPRITE_EXIT_Y 0
 
-# define ZOOM_FACTOR 3
+# define ZOOM_FACTOR 1
 
 int			coin_counter(t_map *map);
 int			line_lenght_checker(t_map *map);
@@ -130,7 +130,8 @@ void		free_params(t_params *params);
 void		my_mlx_pixel_put(t_data *data, int x, int y, int color);
 bool		is_valid_move(t_map *map, bool **visited, int x, int y);
 bool		dfs(t_map *map, bool **visited, int x, int y);
-bool		find_player(t_map *map, int *x, int *y);
+t_point		find_player(t_map *map);
+bool		is_player(t_map *map, int *x, int *y);
 bool		is_map_solvable(t_map *map);
 int			check_map_corners(t_map *map);
 void		draw_sprite(t_params p, int start_x, int start_y, \
@@ -142,6 +143,7 @@ void		draw_sprite_c(t_params p, int start_x, int start_y);
 void		draw_sprite_e(t_params p, int start_x, int start_y);
 void		draw_sprite_d(t_params p, int start_x, int start_y);
 void		draw_map(t_params p);
+void		draw_tiles(t_params p, t_point old, t_point new);
 int			move_player(t_map *map, int keycode, int max_coin);
 int			key_input(int keycode, t_params param);
 int			close_win_cross(t_params *param);

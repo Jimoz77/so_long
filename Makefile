@@ -11,7 +11,7 @@ OBJ_DIR = obj
 NAME = so_long
 
 # Liste des fichiers sources
-SRCS = src/main.c src/exit_fonc.c src/map_fonc.c src/move_fonc.c src/sprite_fonc.c src/sprite_fonc2.c src/else.c gnl/get_next_line.c gnl/get_next_line_utils.c
+SRCS = src/main.c src/exit_fonc.c src/map_fonc.c src/draw_tile.c src/move_fonc.c src/sprite_fonc.c src/sprite_fonc2.c src/else.c gnl/get_next_line.c gnl/get_next_line_utils.c
 
 # Génère les fichiers objets correspondants
 OBJS = $(SRCS:%.c=$(OBJ_DIR)/%.o)

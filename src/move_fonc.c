@@ -6,11 +6,53 @@
 /*   By: jimpa <jimpa@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 11:56:05 by jimpa             #+#    #+#             */
-/*   Updated: 2025/01/27 18:10:11 by jimpa            ###   ########.fr       */
+/*   Updated: 2025/01/31 15:42:33 by jimpa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
+
+t_point	find_d(t_map *map)
+{
+	t_point	player;
+
+	player.y = 0;
+	while (player.y < map->height)
+	{
+		player.x = 0;
+		while (player.x < map->width)
+		{
+			if (map->m_dat[player.y][player.x] == 'D')
+				return (player);
+			player.x++;
+		}
+		player.y++;
+	}
+	player.x = 0;
+	player.y = 0;
+	return (player);
+}
+
+t_point	find_player(t_map *map)
+{
+	t_point	player;
+
+	player.y = 0;
+	while (player.y < map->height)
+	{
+		player.x = 0;
+		while (player.x < map->width)
+		{
+			if (map->m_dat[player.y][player.x] == 'P')
+				return (player);
+			player.x++;
+		}
+		player.y++;
+	}
+	player.x = 0;
+	player.y = 0;
+	return (player);
+}
 
 void	print_move(void)
 {
@@ -88,7 +130,9 @@ int	move_player(t_map *map, int keycode, int max_coin)
 
 int	key_input(int keycode, t_params param)
 {
-	int	change;
+	t_point	old;
+	t_point	new;
+	int		change;
 
 	change = 0;
 	if (keycode == 65307)
@@ -96,10 +140,14 @@ int	key_input(int keycode, t_params param)
 		free_params(&param);
 		exit(0);
 	}
+	old = find_player(param.map);
 	change = move_player(param.map, keycode, param.max_coin);
+	new = find_player(param.map);
+	if (change == 1 && (new.x == 0 && new.y == 0))
+		new = find_d(param.map);
 	if (change == 1)
 	{
-		draw_map(param);
+		draw_tiles(param, old, new);
 		mlx_put_image_to_window(param.mlx_ptr, param.win_ptr, \
 		param.img->img, 0, 0);
 	}

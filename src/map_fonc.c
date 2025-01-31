@@ -6,7 +6,7 @@
 /*   By: jimpa <jimpa@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 21:22:17 by jimpa             #+#    #+#             */
-/*   Updated: 2025/01/27 18:15:04 by jimpa            ###   ########.fr       */
+/*   Updated: 2025/01/31 15:43:07 by jimpa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ bool	is_map_solvable(t_map *map)
 	int		j;
 
 	i = 0;
-	if (!find_player(map, &player_x, &player_y))
+	if (!is_player(map, &player_x, &player_y))
 		return (false);
 	if (!visited)
 		return (false);

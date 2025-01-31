@@ -6,7 +6,7 @@
 /*   By: jimpa <jimpa@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 16:45:20 by jimpa             #+#    #+#             */
-/*   Updated: 2025/01/27 18:13:46 by jimpa            ###   ########.fr       */
+/*   Updated: 2025/01/28 21:45:09 by jimpa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ bool	is_valid_move(t_map *map, bool **visited, int x, int y)
 	map->m_dat[y][x] != '1' && !visited[y][x]);
 }
 
-bool	find_player(t_map *map, int *x, int *y)
+bool	is_player(t_map *map, int *x, int *y)
 {
 	int	i;
 	int	j;
