@@ -6,7 +6,7 @@
 /*   By: jimpa <jimpa@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 14:34:45 by jimpa             #+#    #+#             */
-/*   Updated: 2025/01/31 15:38:18 by jimpa            ###   ########.fr       */
+/*   Updated: 2025/01/31 16:17:58 by jimpa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,7 @@ typedef struct s_draw_params
 # define SPRITE_EXIT_X 224
 # define SPRITE_EXIT_Y 0
 
-# define ZOOM_FACTOR 1
+# define ZOOM_FACTOR 3
 
 int			coin_counter(t_map *map);
 int			line_lenght_checker(t_map *map);
@@ -129,7 +129,7 @@ int			check_carac(t_map *map);
 void		free_params(t_params *params);
 void		my_mlx_pixel_put(t_data *data, int x, int y, int color);
 bool		is_valid_move(t_map *map, bool **visited, int x, int y);
-bool		dfs(t_map *map, bool **visited, int x, int y);
+bool 		dfs(t_map *map, bool **visited, int x, int y, int target_x, int target_y);
 t_point		find_player(t_map *map);
 bool		is_player(t_map *map, int *x, int *y);
 bool		is_map_solvable(t_map *map);

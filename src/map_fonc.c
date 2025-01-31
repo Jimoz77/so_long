@@ -6,53 +6,151 @@
 /*   By: jimpa <jimpa@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 21:22:17 by jimpa             #+#    #+#             */
-/*   Updated: 2025/01/31 15:43:07 by jimpa            ###   ########.fr       */
+/*   Updated: 2025/01/31 16:59:53 by jimpa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
+bool	are_collectibles_reachable(t_map *map)
+{
+    bool **visited;
+    int	player_x;
+    int	player_y;
+    int	i = 0;
+    int	j;
+
+	visited = (bool **)malloc(map->height * sizeof(bool *));
+    if (!is_player(map, &player_x, &player_y))
+        return (false);
+    if (!visited)
+        return (false);
+
+    while (i < map->height)
+    {
+        visited[i] = (bool *)malloc(map->width * sizeof(bool));
+        if (!visited[i])
+        {
+            while (i-- > 0)
+                free(visited[i]);
+            free(visited);
+            return (false);
+        }
+        j = 0;
+        while (j < map->width)
+        {
+            visited[i][j] = false;
+            j++;
+        }
+        i++;
+    }
+
+    i = 0;
+    while (i < map->height)
+    {
+        j = 0;
+        while (j < map->width)
+        {
+            if (map->m_dat[i][j] == 'C')
+            {
+                int k = 0;
+                while (k < map->height)
+                {
+                    int l = 0;
+                    while (l < map->width)
+                    {
+                        visited[k][l] = false;
+                        l++;
+                    }
+                    k++;
+                }
+                if (!dfs(map, visited, player_x, player_y, j, i))
+                {
+                    k = 0;
+                    while (k < map->height)
+                    {
+                        free(visited[k]);
+                        k++;
+                    }
+                    free(visited);
+                    return (false);
+                }
+            }
+            j++;
+        }
+        i++;
+    }
+
+    i = 0;
+    while (i < map->height)
+    {
+        free(visited[i]);
+        i++;
+    }
+    free(visited);
+    return (true);
+}
+
 bool	is_map_solvable(t_map *map)
 {
-	bool	result;
-	bool	**visited = (bool **)malloc(map->height * sizeof(bool *));
-	int		player_x;
-	int		player_y;
-	int		i;
-	int		j;
+    bool result;
+    bool **visited;
+    int player_x, player_y;
+    int exit_x = -1, exit_y = -1;
+    int i = 0, j;
 
-	i = 0;
-	if (!is_player(map, &player_x, &player_y))
-		return (false);
-	if (!visited)
-		return (false);
-	while (i < map->height)
-	{
-		visited[i] = (bool *)malloc(map->width * sizeof(bool));
-		if (!visited[i])
-		{
-			while (i-- > 0)
-				free(visited[i]);
-			free(visited);
-			return (false);
-		}
-		j = 0;
-		while (j < map->width)
-		{
-			visited[i][j] = false;
-			j++;
-		}
-		i++;
-	}
-	result = dfs(map, visited, player_x, player_y);
-	i = 0;
-	while (i < map->height)
-	{
-		free(visited[i]);
-		i++;
-	}
-	free(visited);
-	return (result);
+	visited = (bool **)malloc(map->height * sizeof(bool *));
+    if (!is_player(map, &player_x, &player_y))
+        return (false);
+    if (!visited)
+        return (false);
+
+    while (i < map->height)
+    {
+        visited[i] = (bool *)malloc(map->width * sizeof(bool));
+        if (!visited[i])
+        {
+            while (i-- > 0)
+                free(visited[i]);
+            free(visited);
+            return false;
+        }
+        j = 0;
+        while (j < map->width)
+        {
+            visited[i][j] = false;
+            if (map->m_dat[i][j] == 'E')
+            {
+                exit_x = j;
+                exit_y = i;
+            }
+            j++;
+        }
+        i++;
+    }
+
+    if (exit_x == -1 || exit_y == -1)
+    {
+        i = 0;
+        while (i < map->height)
+        {
+            free(visited[i]);
+            i++;
+        }
+        free(visited);
+        return false;
+    }
+
+    result = dfs(map, visited, player_x, player_y, exit_x, exit_y);
+
+    i = 0;
+    while (i < map->height)
+    {
+        free(visited[i]);
+        i++;
+    }
+    free(visited);
+    return result;
 }
 
 int	check_map_corners(t_map *map)
@@ -187,7 +285,8 @@ void	map_checker(t_params *params)
 		result = 0;
 	if (check_map_corners(params->map) == 0)
 		result = 0;
-	if (is_map_solvable(params->map) == 0)
+	if (is_map_solvable(params->map) == 0 || \
+	!are_collectibles_reachable(params->map))
 		result = 0;
 	if (result == 0)
 	{

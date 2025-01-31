@@ -6,7 +6,7 @@
 /*   By: jimpa <jimpa@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 18:11:12 by jimpa             #+#    #+#             */
-/*   Updated: 2025/01/27 18:11:47 by jimpa            ###   ########.fr       */
+/*   Updated: 2025/01/31 16:39:14 by jimpa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,27 +88,28 @@ void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 	return ;
 }
 
-bool	dfs(t_map *map, bool **visited, int x, int y)
+bool	dfs(t_map *map, bool **visited, int x, \
+	int y, int target_x, int target_y)
 {
 	static t_point	directions[4] = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
-	static bool		exit = false;
 	int				new_x;
 	int				new_y;
 	int				i;
 
-	i = 0;
-	if (map->m_dat[y][x] == 'E')
-		exit = true;
-	if (map->m_dat[y][x] == 'C' && exit == true)
+	if (x == target_x && y == target_y)
 		return (true);
 	visited[y][x] = true;
+	i = 0;
 	while (i < 4)
 	{
 		new_x = x + directions[i].x;
 		new_y = y + directions[i].y;
+
 		if (is_valid_move(map, visited, new_x, new_y))
-			if (dfs(map, visited, new_x, new_y))
+		{
+			if (dfs(map, visited, new_x, new_y, target_x, target_y))
 				return (true);
+		}
 		i++;
 	}
 	return (false);
