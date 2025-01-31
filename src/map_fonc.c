@@ -6,7 +6,7 @@
 /*   By: jimpa <jimpa@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 21:22:17 by jimpa             #+#    #+#             */
-/*   Updated: 2025/01/31 17:09:23 by jimpa            ###   ########.fr       */
+/*   Updated: 2025/01/31 17:52:36 by jimpa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ bool	are_collectibles_reachable(t_map *map)
         return (false);
     if (!visited)
         return (false);
-
     while (i < map->height)
     {
         visited[i] = (bool *)malloc(map->width * sizeof(bool));
@@ -44,7 +43,6 @@ bool	are_collectibles_reachable(t_map *map)
         }
         i++;
     }
-
     i = 0;
     while (i < map->height)
     {
@@ -80,7 +78,6 @@ bool	are_collectibles_reachable(t_map *map)
         }
         i++;
     }
-
     i = 0;
     while (i < map->height)
     {
@@ -104,7 +101,6 @@ bool	is_map_solvable(t_map *map)
         return (false);
     if (!visited)
         return (false);
-
     while (i < map->height)
     {
         visited[i] = (bool *)malloc(map->width * sizeof(bool));
@@ -128,7 +124,6 @@ bool	is_map_solvable(t_map *map)
         }
         i++;
     }
-
     if (exit_x == -1 || exit_y == -1)
     {
         i = 0;
@@ -140,9 +135,7 @@ bool	is_map_solvable(t_map *map)
         free(visited);
         return false;
     }
-
     result = dfs(map, visited, player_x, player_y, exit_x, exit_y);
-
     i = 0;
     while (i < map->height)
     {
