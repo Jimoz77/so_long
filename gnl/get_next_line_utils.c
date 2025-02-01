@@ -3,16 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jimpa <jimpa@student.42.fr>                +#+  +:+       +#+        */
+/*   By: jiparcer <jiparcer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 12:17:38 by jiparcer          #+#    #+#             */
-/*   Updated: 2025/01/21 14:09:03 by jimpa            ###   ########.fr       */
+/*   Updated: 2025/02/01 17:43:52 by jiparcer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 #include "../ft_printf/libft/libft.h"
-
 
 char	*ft_strchr(const char *s, int c)
 {

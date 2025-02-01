@@ -6,7 +6,7 @@
 /*   By: jiparcer <jiparcer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 14:34:45 by jimpa             #+#    #+#             */
-/*   Updated: 2025/02/01 14:59:37 by jiparcer         ###   ########.fr       */
+/*   Updated: 2025/02/01 17:16:48 by jiparcer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,34 @@ typedef struct s_draw_params
 	int		start_y;
 }	t_draw_params;
 
+typedef struct s_collect
+{
+	int		player_x;
+	int		player_y;
+	int		j;
+	int		i;
+	int		k;
+	int		l;
+}	t_collect;
+
+typedef struct s_map_solv
+{
+	bool	result;
+	int		player_x;
+	int		player_y;
+	int		exit_x;
+	int		exit_y;
+	int		i;
+	int		j;
+}	t_map_solv;
+
+typedef struct s_map_corn
+{
+	int	x;
+	int	y;
+	int	y_max;
+}	t_map_corn;
+
 # define TILE_SIZE 32
 
 # define SPRITE_FLOOR_X 0
@@ -144,12 +172,24 @@ void		draw_sprite_c(t_params p, int start_x, int start_y);
 void		draw_sprite_e(t_params p, int start_x, int start_y);
 void		draw_sprite_d(t_params p, int start_x, int start_y);
 void		draw_map(t_params p);
+bool		are_collectibles_reachable(t_map *map);
 void		draw_tiles(t_params p, t_point old, t_point new);
 int			move_player(t_map *map, int keycode, int max_coin);
 int			key_input(int keycode, t_params *param);
 int			close_win_cross(t_params *param);
 t_sprite	*load_sprite(void *mlx, char *file_path);
 t_map		*read_map(char *file_name);
+void		free_visited(t_map *map, bool **visited);
+bool		**initialize_visited(t_map *map);
+bool		check_exit(t_map *map, bool **visited, t_map_solv *s);
+bool		is_map_solvable(t_map *map);
+void		reset_visited(t_map *map, bool **visited);
+bool		check_collectibles(t_map *map, bool **visited, t_collect *c);
+bool		are_collectibles_reachable(t_map *map);
 void		map_checker(t_params *params);
+t_point		find_d(t_map *map);
+void		print_move(void);
+int			move_player3(t_map *m, int kcode, int max_coin, t_move cd);
+int			move_player2(t_map *map, int keycode, int max_coin, t_move cord);
 
 #endif
