@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_fonc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jimpa <jimpa@student.42.fr>                +#+  +:+       +#+        */
+/*   By: jiparcer <jiparcer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 21:22:17 by jimpa             #+#    #+#             */
-/*   Updated: 2025/01/31 17:52:36 by jimpa            ###   ########.fr       */
+/*   Updated: 2025/02/01 15:28:39 by jiparcer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,136 +14,145 @@
 
 bool	are_collectibles_reachable(t_map *map)
 {
-    bool **visited;
-    int	player_x;
-    int	player_y;
-    int	i = 0;
-    int	j;
+	bool	**visited;
+	int		player_x;
+	int		player_y;
+	int		j;
+	int		i;
+	int		k;
+	int		l;
 
+	i = 0;
 	visited = (bool **)malloc(map->height * sizeof(bool *));
-    if (!is_player(map, &player_x, &player_y))
-        return (false);
-    if (!visited)
-        return (false);
-    while (i < map->height)
-    {
-        visited[i] = (bool *)malloc(map->width * sizeof(bool));
-        if (!visited[i])
-        {
-            while (i-- > 0)
-                free(visited[i]);
-            free(visited);
-            return (false);
-        }
-        j = 0;
-        while (j < map->width)
-        {
-            visited[i][j] = false;
-            j++;
-        }
-        i++;
-    }
-    i = 0;
-    while (i < map->height)
-    {
-        j = 0;
-        while (j < map->width)
-        {
-            if (map->m_dat[i][j] == 'C')
-            {
-                int k = 0;
-                while (k < map->height)
-                {
-                    int l = 0;
-                    while (l < map->width)
-                    {
-                        visited[k][l] = false;
-                        l++;
-                    }
-                    k++;
-                }
-                if (!dfs(map, visited, player_x, player_y, j, i))
-                {
-                    k = 0;
-                    while (k < map->height)
-                    {
-                        free(visited[k]);
-                        k++;
-                    }
-                    free(visited);
-                    return (false);
-                }
-            }
-            j++;
-        }
-        i++;
-    }
-    i = 0;
-    while (i < map->height)
-    {
-        free(visited[i]);
-        i++;
-    }
-    free(visited);
-    return (true);
+	if (!is_player(map, &player_x, &player_y))
+		return (false);
+	if (!visited)
+		return (false);
+	while (i < map->height)
+	{
+		visited[i] = (bool *)malloc(map->width * sizeof(bool));
+		if (!visited[i])
+		{
+			while (i-- > 0)
+				free(visited[i]);
+			free(visited);
+			return (false);
+		}
+		j = 0;
+		while (j < map->width)
+		{
+			visited[i][j] = false;
+			j++;
+		}
+		i++;
+	}
+	i = 0;
+	while (i < map->height)
+	{
+		j = 0;
+		while (j < map->width)
+		{
+			if (map->m_dat[i][j] == 'C')
+			{
+				k = 0;
+				while (k < map->height)
+				{
+					l = 0;
+					while (l < map->width)
+					{
+						visited[k][l] = false;
+						l++;
+					}
+					k++;
+				}
+				if (!dfs(map, visited, player_x, player_y, j, i))
+				{
+					k = 0;
+					while (k < map->height)
+					{
+						free(visited[k]);
+						k++;
+					}
+					free(visited);
+					return (false);
+				}
+			}
+			j++;
+		}
+		i++;
+	}
+	i = 0;
+	while (i < map->height)
+	{
+		free(visited[i]);
+		i++;
+	}
+	free(visited);
+	return (true);
 }
 
 bool	is_map_solvable(t_map *map)
 {
-    bool result;
-    bool **visited;
-    int player_x, player_y;
-    int exit_x = -1, exit_y = -1;
-    int i = 0, j;
+	bool	**visited;
+	bool	result;
+	int		player_x;
+	int		player_y;
+	int		exit_x;
+	int		exit_y;
+	int		i;
+	int		j;
 
+	i = 0;
+	exit_x = -1;
+	exit_y = -1;
 	visited = (bool **)malloc(map->height * sizeof(bool *));
-    if (!is_player(map, &player_x, &player_y))
-        return (false);
-    if (!visited)
-        return (false);
-    while (i < map->height)
-    {
-        visited[i] = (bool *)malloc(map->width * sizeof(bool));
-        if (!visited[i])
-        {
-            while (i-- > 0)
-                free(visited[i]);
-            free(visited);
-            return false;
-        }
-        j = 0;
-        while (j < map->width)
-        {
-            visited[i][j] = false;
-            if (map->m_dat[i][j] == 'E')
-            {
-                exit_x = j;
-                exit_y = i;
-            }
-            j++;
-        }
-        i++;
-    }
-    if (exit_x == -1 || exit_y == -1)
-    {
-        i = 0;
-        while (i < map->height)
-        {
-            free(visited[i]);
-            i++;
-        }
-        free(visited);
-        return false;
-    }
-    result = dfs(map, visited, player_x, player_y, exit_x, exit_y);
-    i = 0;
-    while (i < map->height)
-    {
-        free(visited[i]);
-        i++;
-    }
-    free(visited);
-    return result;
+	if (!is_player(map, &player_x, &player_y))
+		return (false);
+	if (!visited)
+		return (false);
+	while (i < map->height)
+	{
+		visited[i] = (bool *)malloc(map->width * sizeof(bool));
+		if (!visited[i])
+		{
+			while (i-- > 0)
+				free(visited[i]);
+			free(visited);
+			return (false);
+		}
+		j = 0;
+		while (j < map->width)
+		{
+			visited[i][j] = false;
+			if (map->m_dat[i][j] == 'E')
+			{
+				exit_x = j;
+				exit_y = i;
+			}
+			j++;
+		}
+		i++;
+	}
+	if (exit_x == -1 || exit_y == -1)
+	{
+		i = 0;
+		while (i < map->height)
+		{
+			free(visited[i]);
+			i++;
+		}
+		free(visited);
+		return (false);
+	}
+	result = dfs(map, visited, player_x, player_y, exit_x, exit_y);
+	i = 0;
+	while (i < map->height)
+	{
+		free(visited[i]);
+		i++;
+	}
+	free(visited);
+	return (result);
 }
 
 int	check_map_corners(t_map *map)
@@ -218,53 +227,53 @@ void	draw_map(t_params p)
 
 t_map	*read_map(char *file_name)
 {
-    t_map	*map;
-    char	*line;
-    int		fd;
-    int		i;
+	t_map	*map;
+	char	*line;
+	int		fd;
+	int		i;
 
-    fd = open(file_name, O_RDONLY);
-    if (fd < 0)
-        return (NULL);
-    map = (t_map *)malloc(sizeof(t_map));
-    if (!map)
-        return (NULL);
-    map->height = 0;
-    line = get_next_line(fd);
-    while (line)
-    {
-        free(line);
-        map->height++;
-        line = get_next_line(fd);
-    }
-    map->m_dat = (char **)malloc(sizeof(char *) * map->height);
-    if (!map->m_dat)
-    {
-        free(map);
-        return (NULL);
-    }
-    close(fd);
-    fd = open(file_name, O_RDONLY);
-    if (fd < 0)
-    {
-        free(map->m_dat);
-        free(map);
-        return (NULL);
-    }
-    i = 0;
-    line = get_next_line(fd);
-    while (line)
-    {
-        map->m_dat[i] = line;
-        i++;
-        line = get_next_line(fd);
-    }
-    if (map->height > 0)
-        map->width = ft_strlen(map->m_dat[0]);
-    else
-        map->width = 0;
-    close(fd);
-    return (map);
+	fd = open(file_name, O_RDONLY);
+	if (fd < 0)
+		return (NULL);
+	map = (t_map *)malloc(sizeof(t_map));
+	if (!map)
+		return (NULL);
+	map->height = 0;
+	line = get_next_line(fd);
+	while (line)
+	{
+		free(line);
+		map->height++;
+		line = get_next_line(fd);
+	}
+	map->m_dat = (char **)malloc(sizeof(char *) * map->height);
+	if (!map->m_dat)
+	{
+		free(map);
+		return (NULL);
+	}
+	close(fd);
+	fd = open(file_name, O_RDONLY);
+	if (fd < 0)
+	{
+		free(map->m_dat);
+		free(map);
+		return (NULL);
+	}
+	i = 0;
+	line = get_next_line(fd);
+	while (line)
+	{
+		map->m_dat[i] = line;
+		i++;
+		line = get_next_line(fd);
+	}
+	if (map->height > 0)
+		map->width = ft_strlen(map->m_dat[0]);
+	else
+		map->width = 0;
+	close(fd);
+	return (map);
 }
 
 void	map_checker(t_params *params)

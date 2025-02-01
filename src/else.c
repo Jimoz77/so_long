@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   else.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jimpa <jimpa@student.42.fr>                +#+  +:+       +#+        */
+/*   By: jiparcer <jiparcer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 18:11:12 by jimpa             #+#    #+#             */
-/*   Updated: 2025/01/31 16:39:14 by jimpa            ###   ########.fr       */
+/*   Updated: 2025/02/01 14:57:55 by jiparcer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,6 @@ bool	dfs(t_map *map, bool **visited, int x, \
 	{
 		new_x = x + directions[i].x;
 		new_y = y + directions[i].y;
-
 		if (is_valid_move(map, visited, new_x, new_y))
 		{
 			if (dfs(map, visited, new_x, new_y, target_x, target_y))

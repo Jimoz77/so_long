@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   move_fonc.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jimpa <jimpa@student.42.fr>                +#+  +:+       +#+        */
+/*   By: jiparcer <jiparcer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 11:56:05 by jimpa             #+#    #+#             */
-/*   Updated: 2025/01/31 15:42:33 by jimpa            ###   ########.fr       */
+/*   Updated: 2025/02/01 12:22:55 by jiparcer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,7 +128,7 @@ int	move_player(t_map *map, int keycode, int max_coin)
 	return (move_player2(map, keycode, max_coin, cord));
 }
 
-int	key_input(int keycode, t_params param)
+int	key_input(int keycode, t_params *param)
 {
 	t_point	old;
 	t_point	new;
@@ -137,19 +137,19 @@ int	key_input(int keycode, t_params param)
 	change = 0;
 	if (keycode == 65307)
 	{
-		free_params(&param);
+		free_params(param);
 		exit(0);
 	}
-	old = find_player(param.map);
-	change = move_player(param.map, keycode, param.max_coin);
-	new = find_player(param.map);
+	old = find_player(param->map);
+	change = move_player(param->map, keycode, param->max_coin);
+	new = find_player(param->map);
 	if (change == 1 && (new.x == 0 && new.y == 0))
-		new = find_d(param.map);
+		new = find_d(param->map);
 	if (change == 1)
 	{
-		draw_tiles(param, old, new);
-		mlx_put_image_to_window(param.mlx_ptr, param.win_ptr, \
-		param.img->img, 0, 0);
+		draw_tiles(*param, old, new);
+		mlx_put_image_to_window(param->mlx_ptr, param->win_ptr, \
+		param->img->img, 0, 0);
 	}
 	return (0);
 }

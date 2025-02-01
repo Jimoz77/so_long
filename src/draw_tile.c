@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw_tile.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jimpa <jimpa@student.42.fr>                +#+  +:+       +#+        */
+/*   By: jiparcer <jiparcer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 15:35:35 by jimpa             #+#    #+#             */
-/*   Updated: 2025/01/31 15:35:36 by jimpa            ###   ########.fr       */
+/*   Updated: 2025/02/01 14:57:31 by jiparcer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,5 +32,4 @@ void	draw_tiles(t_params p, t_point old, t_point new)
 {
 	draw_tiles2(p, new.x, new.y);
 	draw_tiles2(p, old.x, old.y);
-
 }

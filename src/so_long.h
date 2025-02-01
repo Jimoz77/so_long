@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   so_long.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jimpa <jimpa@student.42.fr>                +#+  +:+       +#+        */
+/*   By: jiparcer <jiparcer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 14:34:45 by jimpa             #+#    #+#             */
-/*   Updated: 2025/01/31 16:17:58 by jimpa            ###   ########.fr       */
+/*   Updated: 2025/02/01 14:59:37 by jiparcer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,7 +129,8 @@ int			check_carac(t_map *map);
 void		free_params(t_params *params);
 void		my_mlx_pixel_put(t_data *data, int x, int y, int color);
 bool		is_valid_move(t_map *map, bool **visited, int x, int y);
-bool 		dfs(t_map *map, bool **visited, int x, int y, int target_x, int target_y);
+bool		dfs(t_map *map, bool **visited, int x, int y, int target_x, int target_y);
+void		error_case(t_params *params, int c);
 t_point		find_player(t_map *map);
 bool		is_player(t_map *map, int *x, int *y);
 bool		is_map_solvable(t_map *map);
@@ -145,7 +146,7 @@ void		draw_sprite_d(t_params p, int start_x, int start_y);
 void		draw_map(t_params p);
 void		draw_tiles(t_params p, t_point old, t_point new);
 int			move_player(t_map *map, int keycode, int max_coin);
-int			key_input(int keycode, t_params param);
+int			key_input(int keycode, t_params *param);
 int			close_win_cross(t_params *param);
 t_sprite	*load_sprite(void *mlx, char *file_path);
 t_map		*read_map(char *file_name);
