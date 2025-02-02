@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_fonc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jiparcer <jiparcer@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jimpa <jimpa@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 21:22:17 by jimpa             #+#    #+#             */
-/*   Updated: 2025/02/01 17:12:39 by jiparcer         ###   ########.fr       */
+/*   Updated: 2025/02/02 20:08:20 by jimpa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,8 @@ bool	is_map_solvable(t_map *map)
 
 	s.exit_x = -1;
 	s.exit_y = -1;
-	if (!is_player(map, &s.player_x, &s.player_y))
+	s.player = find_player(map);
+	if (!is_player(map, &s.player.x, &s.player.y))
 		return (false);
 	visited = initialize_visited(map);
 	if (!visited)
@@ -85,7 +86,7 @@ bool	is_map_solvable(t_map *map)
 		free_visited(map, visited);
 		return (false);
 	}
-	s.result = dfs(map, visited, s.player_x, s.player_y, s.exit_x, s.exit_y);
+	s.result = dfs(map, visited, &s);
 	free_visited(map, visited);
 	return (s.result);
 }

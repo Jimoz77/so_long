@@ -6,7 +6,7 @@
 /*   By: jimpa <jimpa@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 16:45:20 by jimpa             #+#    #+#             */
-/*   Updated: 2025/01/28 21:45:09 by jimpa            ###   ########.fr       */
+/*   Updated: 2025/02/02 20:29:07 by jimpa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,10 @@ bool	is_player(t_map *map, int *x, int *y)
 {
 	int	i;
 	int	j;
+	int	player;
 
 	i = 0;
+	player = 0;
 	while (i < map->height)
 	{
 		j = 0;
@@ -33,12 +35,14 @@ bool	is_player(t_map *map, int *x, int *y)
 			{
 				*x = j;
 				*y = i;
-				return (true);
+				player++;
 			}
 			j++;
 		}
 		i++;
 	}
+	if (player == 1)
+		return (true);
 	return (false);
 }
 

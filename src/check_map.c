@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_map.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jiparcer <jiparcer@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jimpa <jimpa@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/01 17:00:25 by jiparcer          #+#    #+#             */
-/*   Updated: 2025/02/01 17:40:29 by jiparcer         ###   ########.fr       */
+/*   Updated: 2025/02/02 20:01:18 by jimpa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,46 +80,52 @@ void	map_checker(t_params *params)
 
 bool	are_collectibles_reachable(t_map *map)
 {
-	t_collect	c;
+	t_map_solv	c;
 	bool		**visited;
 
-	if (!is_player(map, &c.player_x, &c.player_y))
+	c.player = find_player(map);
+	if (!is_player(map, &c.player.x, &c.player.y))
 		return (false);
 	visited = initialize_visited(map);
 	if (!visited)
 		return (false);
 	if (!check_collectibles(map, visited, &c))
 	{
-		c.i = 0;
-		while (c.i < map->height)
-			free(visited[c.i++]);
+		c.exit_y = 0;
+		while (c.exit_y < map->height)
+			free(visited[c.exit_y++]);
 		free(visited);
 		return (false);
 	}
-	c.i = 0;
-	while (c.i < map->height)
-		free(visited[c.i++]);
+	c.exit_y = 0;
+	while (c.exit_y < map->height)
+		free(visited[c.exit_y++]);
 	free(visited);
 	return (true);
 }
+// i == exit_y
+// j == exit_x
+// player_y == player_y
+// player_x == player_x
+// visited == visited
 
-bool	check_collectibles(t_map *map, bool **visited, t_collect *c)
+bool	check_collectibles(t_map *map, bool **visited, t_map_solv *c)
 {
-	c->i = 0;
-	while (c->i < map->height)
+	c->exit_y = 0;
+	while (c->exit_y < map->height)
 	{
-		c->j = 0;
-		while (c->j < map->width)
+		c->exit_x = 0;
+		while (c->exit_x < map->width)
 		{
-			if (map->m_dat[c->i][c->j] == 'C')
+			if (map->m_dat[c->exit_y][c->exit_x] == 'C')
 			{
 				reset_visited(map, visited);
-				if (!dfs(map, visited, c->player_x, c->player_y, c->j, c->i))
+				if (!dfs(map, visited, c))
 					return (false);
 			}
-			c->j++;
+			c->exit_x++;
 		}
-		c->i++;
+		c->exit_y++;
 	}
 	return (true);
 }

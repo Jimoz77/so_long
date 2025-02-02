@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   else.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jiparcer <jiparcer@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jimpa <jimpa@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 18:11:12 by jimpa             #+#    #+#             */
-/*   Updated: 2025/02/01 17:38:49 by jiparcer         ###   ########.fr       */
+/*   Updated: 2025/02/02 20:12:13 by jimpa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,26 +88,29 @@ void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 	return ;
 }
 
-bool	dfs(t_map *map, bool **visited, int x, \
-	int y, int target_x, int target_y)
+bool	dfs(t_map *map, bool **visited, t_map_solv *s)
 {
 	static t_point	directions[4] = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
 	int				new_x;
 	int				new_y;
 	int				i;
 
-	if (x == target_x && y == target_y)
+	if (s->player.x == s->exit_x && s->player.y == s->exit_y)
 		return (true);
-	visited[y][x] = true;
+	visited[s->player.y][s->player.x] = true;
 	i = 0;
 	while (i < 4)
 	{
-		new_x = x + directions[i].x;
-		new_y = y + directions[i].y;
+		new_x = s->player.x + directions[i].x;
+		new_y = s->player.y + directions[i].y;
 		if (is_valid_move(map, visited, new_x, new_y))
 		{
-			if (dfs(map, visited, new_x, new_y, target_x, target_y))
+			s->player.x = new_x;
+			s->player.y = new_y;
+			if (dfs(map, visited, s))
 				return (true);
+			s->player.x -= directions[i].x;
+			s->player.y -= directions[i].y;
 		}
 		i++;
 	}

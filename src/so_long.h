@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   so_long.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jiparcer <jiparcer@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jimpa <jimpa@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 14:34:45 by jimpa             #+#    #+#             */
-/*   Updated: 2025/02/01 17:16:48 by jiparcer         ###   ########.fr       */
+/*   Updated: 2025/02/02 20:09:24 by jimpa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,9 +113,8 @@ typedef struct s_collect
 
 typedef struct s_map_solv
 {
+	t_point	player;
 	bool	result;
-	int		player_x;
-	int		player_y;
 	int		exit_x;
 	int		exit_y;
 	int		i;
@@ -157,7 +156,7 @@ int			check_carac(t_map *map);
 void		free_params(t_params *params);
 void		my_mlx_pixel_put(t_data *data, int x, int y, int color);
 bool		is_valid_move(t_map *map, bool **visited, int x, int y);
-bool		dfs(t_map *map, bool **visited, int x, int y, int target_x, int target_y);
+bool		dfs(t_map *map, bool **visited, t_map_solv *s);
 void		error_case(t_params *params, int c);
 t_point		find_player(t_map *map);
 bool		is_player(t_map *map, int *x, int *y);
@@ -184,7 +183,7 @@ bool		**initialize_visited(t_map *map);
 bool		check_exit(t_map *map, bool **visited, t_map_solv *s);
 bool		is_map_solvable(t_map *map);
 void		reset_visited(t_map *map, bool **visited);
-bool		check_collectibles(t_map *map, bool **visited, t_collect *c);
+bool		check_collectibles(t_map *map, bool **visited, t_map_solv *c);
 bool		are_collectibles_reachable(t_map *map);
 void		map_checker(t_params *params);
 t_point		find_d(t_map *map);
